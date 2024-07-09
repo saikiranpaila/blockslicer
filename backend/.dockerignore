@@ -1,0 +1,28 @@
+# Ignore target directory (since it contains compiled Java classes and built JAR files)
+target/
+
+# Ignore IDE-specific files
+.idea/
+*.iml
+
+# Ignore Maven wrapper files
+.mvn/
+
+# Ignore any generated documentation
+docs/
+
+# Ignore any test or test data
+src/test/
+
+# Ignore any local development configuration files
+application.properties
+
+# Ignore any build output
+build/
+
+# Ignore editor-specific files
+.vscode/
+*.swp
+
+# Ignore any local data or cache
+.DS_Store
