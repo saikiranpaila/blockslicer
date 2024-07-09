@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Block Slicer</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./snackbar.css">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+
+<body>
+    <!-- Game canvas -->
+    <canvas id="c"></canvas>
+
+    <!-- Gameplay HUD -->
+    <div class="hud">
+        <div class="hud__score">
+            <div class="score-lbl"></div>
+            <div class="cube-count-lbl"></div>
+        </div>
+        <div class="pause-btn">
+            <div></div>
+        </div>
+        <div class="slowmo">
+            <div class="slowmo__bar"></div>
+        </div>
+    </div>
+    <!-- snack bar -->
+    <div id="snackbar"></div>
+    <!-- Menu System -->
+    <div class="menus">
+        <div class="menu menu--main">
+            <h1>Block Slicer</h1>
+            <button type="button" class="play-normal-btn">PLAY GAME</button>
+            <button type="button" class="play-casual-btn">CASUAL MODE</button>
+            <button type="button" class="leaderboard-btn">LEADERBOARD</button>
+            <button type="button" class="login-btn">LOGIN</button>
+            <button type="button" class="logout-btn">LOGOUT</button>
+            <div class="footer" id="current-user">
+                <h2>Guest</h2>
+            </div>
+        </div>
+        <div class="menu menu--pause">
+            <h1>Paused</h1>
+            <button type="button" class="resume-btn">RESUME GAME</button>
+            <button type="button" class="menu-btn--pause">MAIN MENU</button>
+        </div>
+        <div class="menu menu--score">
+            <h1>Game Over</h1>
+            <h2>Your Score:</h2>
+            <div class="final-score-lbl"></div>
+            <div class="high-score-lbl"></div>
+            <button type="button" class="play-again-btn">PLAY AGAIN</button>
+            <button type="button" class="menu-btn--score">MAIN MENU</button>
+        </div>
+        <div class="menu menu--leaderboard">
+            <div class="leader-board-header">
+                <button onclick="updateLeaderboard()">Refresh</button>
+                <h1>LEADERBOARD</h1>
+                <button class="leader-board-close">Close</button>
+            </div>
+            <div class="leader-board-table">
+                <table id="leaderboardTable">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Name</th>
+                            <th>Score</th>
+                            <th>Blocks Sliced</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <h1 style="margin-top: 5vh;" id="rank"></h1>
+        </div>
+        <div class="menu menu--login">
+            <div class="main">
+                <input type="checkbox" id="chk" aria-hidden="true">
+                <div class="signup">
+                    <label for="chk" aria-hidden="true">Login</label>
+                    <input type="text" name="txt" id="login-userId" placeholder="UserID" required="" minlength="5">
+                    <input type="password" name="pswd" id="login-password" placeholder="Password" required=""
+                        minlength="2">
+                    <button class="smash-login" onclick="login()">Login</button>
+                </div>
+
+                <div class="login">
+                    <label for="chk" aria-hidden="true">Sign Up</label>
+                    <input type="text" name="txt" id="signup-userId" placeholder="UserID" required="" minlength="5">
+                    <input type="password" name="pswd" id="signup-password" placeholder="Password" required=""
+                        minlength="5">
+                    <button class="smash-login" onclick="signup()">Sign Up</button>
+                    <p id="userId-arg" style="color: #CA2E55;"></p>
+                    <p id="password-arg" style="color: #CA2E55;"></p>
+                </div>
+            </div>
+            <button class="login-close">Close</button>
+        </div>
+    </div>
+    <script src="./index.js"></script>
+
+</body>
+
+</html>
