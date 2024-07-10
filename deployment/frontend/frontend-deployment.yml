@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      initContainers:
+          - name: waiting-for-backend
+            image: busybox
+            command:
+            - sh
+            - -c
+            - until nslookup backend-service.default.svc.cluster.local; do echo waiting for backend; sleep 2; done;
+      containers:
+        - name: frontend-container
+          image: public.ecr.aws/d9s5x8q1/frontend333:latest
+          ports:
+            - containerPort: 3000
+          env:
+          - name: BACKEND_URL
+            value: http://backend-service.default.svc.cluster.local:8080
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"

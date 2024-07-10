@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: master
+spec:
+  selector:
+    matchLabels:
+      app: postgres-master
+  serviceName: master
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: postgres-master
+    spec:
+      containers:
+        - name: postgres-master
+          image: postgres:16.3
+          ports:
+            - containerPort: 5432
+          env:
+          - name: POSTGRES_PASSWORD
+            value: password
+          args:
+            - "-c"
+            - "config_file=/config/postgresql.conf"
+          volumeMounts:
+            # - name: master-volume
+            #   mountPath: /var/lib/postgresql/data
+            - name: config-volume
+              mountPath: /config
+            - name: init-script
+              mountPath: /docker-entrypoint-initdb.d
+      volumes:  
+        - name: config-volume
+          configMap:
+            name: postgres-config-map
+        - name: init-script
+          configMap:
+            name: postgres-init-script
+  # volumeClaimTemplates:
+  #   - metadata:
+  #       name: master-volume
+  #     spec:
+  #       accessModes: ["ReadWriteOncePod"]
+  #       resources:
+  #         requests:
+  #           storage: 1Gi

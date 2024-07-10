@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      initContainers:
+          - name: waiting-for-databases
+            image: busybox
+            command:
+            - sh
+            - -c
+            - until nslookup replica.default.svc.cluster.local; do echo waiting for postgres-replica; sleep 2; done;
+      containers:
+        - name: backend-container
+          image: public.ecr.aws/d9s5x8q1/backend333:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: MASTER_DATASOURCE_URL
+              value: "jdbc:postgresql://master.default.svc.cluster.local:5432/game"
+            - name: MASTER_DATASOURCE_USERNAME
+              value: "postgres"
+            - name: MASTER_DATASOURCE_PASSWORD
+              value: "root"
+            - name: READ_REPLICA_DATASOURCE_URL
+              value: "jdbc:postgresql://replica.default.svc.cluster.local:5432/game"
+            - name: READ_REPLICA_DATASOURCE_USERNAME
+              value: "postgres"
+            - name: READ_REPLICA_DATASOURCE_PASSWORD
+              value: "root"
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"

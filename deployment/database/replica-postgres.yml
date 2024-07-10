@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: replica
+spec:
+  selector:
+    matchLabels:
+      app: postgres-replica
+  serviceName: replica
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: postgres-replica
+    spec:
+      initContainers:
+        - name: wait-for-master
+          image: busybox
+          command:
+          - sh
+          - -c
+          - until nslookup master.default.svc.cluster.local; do echo waiting for postgres-master; sleep 2; done;
+      containers:
+        - name: postgres-replica
+          image: postgres:16.3
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_PASSWORD
+              value: password
+          command:
+            - "bash"
+            - "-c"
+            - >
+              pg_basebackup -h master.default.svc.cluster.local -p 5432 -D /var/lib/postgresql/data -U replicator -P -v -R -X stream &&
+              chown -R postgres:postgres /var/lib/postgresql/data &&
+              chmod 0700 /var/lib/postgresql/data &&
+              sed -i 's/^host all all all scram-sha-256$/host    all             all             0.0.0.0\/0               trust/' /var/lib/postgresql/data/pg_hba.conf &&
+              mkdir config &&
+              cp /var/lib/postgresql/data/pg_hba.conf /config &&
+              chown -R postgres:postgres /config &&
+              chmod 0700 /config &&
+              su postgres -c postgres
+            # volumeMounts:
+          #   - name: shared-volume
+          #     mountPath: /var/lib/postgresql/data
+  # volumeClaimTemplates:
+  #   - metadata:
+  #       name: shared-volume
+  #     spec:
+  #       accessModes: ["ReadWriteOncePod"]
+  #       resources:
+  #         requests:
+  #           storage: 1Gi
