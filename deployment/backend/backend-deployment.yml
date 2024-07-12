@@ -14,14 +14,14 @@ spec:
     spec:
       initContainers:
           - name: waiting-for-databases
-            image: busybox
+            image: 533267321799.dkr.ecr.us-east-1.amazonaws.com/backend:12
             command:
             - sh
             - -c
             - until nslookup replica.default.svc.cluster.local; do echo waiting for postgres-replica; sleep 2; done;
       containers:
         - name: backend-container
-          image: public.ecr.aws/d9s5x8q1/backend333:latest
+          image: 533267321799.dkr.ecr.us-east-1.amazonaws.com/backend:20
           ports:
             - containerPort: 8080
           env:
