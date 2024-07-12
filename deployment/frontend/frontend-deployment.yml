@@ -21,7 +21,7 @@ spec:
             - until nslookup backend-service.default.svc.cluster.local; do echo waiting for backend; sleep 2; done;
       containers:
         - name: frontend-container
-          image: public.ecr.aws/d9s5x8q1/frontend333:latest
+          image: 533267321799.dkr.ecr.us-east-1.amazonaws.com/frontend:8
           ports:
             - containerPort: 3000
           env:
