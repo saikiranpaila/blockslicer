@@ -12,6 +12,8 @@ spec:
       labels:
         app: frontend
     spec:
+      imagePullSecrets:
+        - name: ecr-registry-secret
       initContainers:
           - name: waiting-for-backend
             image: busybox
