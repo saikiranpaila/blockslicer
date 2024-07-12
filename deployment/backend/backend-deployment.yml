@@ -14,7 +14,7 @@ spec:
     spec:
       initContainers:
           - name: waiting-for-databases
-            image: 533267321799.dkr.ecr.us-east-1.amazonaws.com/backend:12
+            image: busybox
             command:
             - sh
             - -c
