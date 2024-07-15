@@ -85,22 +85,22 @@ resource "aws_eks_pod_identity_association" "aws_lbc" {
   role_arn        = aws_iam_role.aws_lbc.arn
 }
 
-resource "helm_release" "aws_lbc" {
-  name = "aws-load-balancer-controller"
+# resource "helm_release" "aws_lbc" {
+#   name = "aws-load-balancer-controller"
 
-  repository = "https://aws.github.io/eks-charts"
-  chart      = "aws-load-balancer-controller"
-  namespace  = "kube-system"
-  version    = "1.8.1"
+#   repository = "https://aws.github.io/eks-charts"
+#   chart      = "aws-load-balancer-controller"
+#   namespace  = "kube-system"
+#   version    = "1.8.1"
 
-  set {
-    name  = "clusterName"
-    value = aws_eks_cluster.eks.name
-  }
+#   set {
+#     name  = "clusterName"
+#     value = aws_eks_cluster.eks.name
+#   }
 
-  set {
-    name  = "serviceAccount.name"
-    value = "aws-load-balancer-controller"
-  }
+#   set {
+#     name  = "serviceAccount.name"
+#     value = "aws-load-balancer-controller"
+#   }
 
-}
+# }
