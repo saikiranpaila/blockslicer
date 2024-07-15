@@ -1,13 +1,14 @@
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: master
 spec:
+  serviceName: master
+  replicas: 1
   selector:
     matchLabels:
       app: postgres-master
-  serviceName: master
-  replicas: 1
   template:
     metadata:
       labels:
@@ -25,8 +26,8 @@ spec:
             - "-c"
             - "config_file=/config/postgresql.conf"
           volumeMounts:
-            # - name: master-volume
-            #   mountPath: /var/lib/postgresql/data
+            - name: master-volume
+              mountPath: /var/lib/postgresql/data
             - name: config-volume
               mountPath: /config
             - name: init-script
@@ -38,11 +39,12 @@ spec:
         - name: init-script
           configMap:
             name: postgres-init-script
-  # volumeClaimTemplates:
-  #   - metadata:
-  #       name: master-volume
-  #     spec:
-  #       accessModes: ["ReadWriteOncePod"]
-  #       resources:
-  #         requests:
-  #           storage: 1Gi
+  volumeClaimTemplates:
+    - metadata:
+        name: master-volume
+      spec:
+        storageClassName: gp2
+        accessModes: ["ReadWriteOncePod"]
+        resources:
+          requests:
+            storage: 1Gi
