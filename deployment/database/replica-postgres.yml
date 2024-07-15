@@ -1,13 +1,14 @@
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: replica
 spec:
+  serviceName: replica
+  replicas: 2
   selector:
     matchLabels:
       app: postgres-replica
-  serviceName: replica
-  replicas: 2
   template:
     metadata:
       labels:
@@ -41,14 +42,14 @@ spec:
               chown -R postgres:postgres /config &&
               chmod 0700 /config &&
               su postgres -c postgres
-            # volumeMounts:
-          #   - name: shared-volume
-          #     mountPath: /var/lib/postgresql/data
-  # volumeClaimTemplates:
-  #   - metadata:
-  #       name: shared-volume
-  #     spec:
-  #       accessModes: ["ReadWriteOncePod"]
-  #       resources:
-  #         requests:
-  #           storage: 1Gi
+          volumeMounts:
+            - name: shared-volume
+              mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:
+    - metadata:
+        name: shared-volume
+      spec:
+        accessModes: ["ReadWriteOncePod"]
+        resources:
+          requests:
+            storage: 1Gi
