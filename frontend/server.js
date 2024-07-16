@@ -14,6 +14,10 @@ app.use(bodyParser.json());
 // Middleware to parse URL-encoded bodies
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.get('/health',(req,res)=>{
+  res.send('Hello World')
+})
+
 app.get('/score', (req, res) => {
   const userId = req.query.userId;
   console.log(`Getting ${userId} score - ${Date.now()}`)

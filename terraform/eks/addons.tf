@@ -92,22 +92,16 @@ resource "aws_eks_pod_identity_association" "aws_lbc" {
   role_arn        = aws_iam_role.aws_lbc.arn
 }
 
-# resource "helm_release" "aws_lbc" {
-#   name = "aws-load-balancer-controller"
+resource "null_resource" "updatekubeconfig" {
+  provisioner "local-exec" {
+    command = "aws eks update-kubeconfig --name ${aws_eks_cluster.eks.name} --region ${local.region}"
+  }
+  depends_on = [aws_eks_cluster.eks, aws_eks_pod_identity_association.aws_lbc]
+}
 
-#   repository = "https://aws.github.io/eks-charts"
-#   chart      = "aws-load-balancer-controller"
-#   namespace  = "kube-system"
-#   version    = "1.8.1"
-
-#   set {
-#     name  = "clusterName"
-#     value = aws_eks_cluster.eks.name
-#   }
-
-#   set {
-#     name  = "serviceAccount.name"
-#     value = "aws-load-balancer-controller"
-#   }
-
-# }
+resource "null_resource" "argocd" {
+  provisioner "local-exec" {
+    command = "kubectl create namespace argocd && kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml"
+  }
+  depends_on = [null_resource.updatekubeconfig]
+}
