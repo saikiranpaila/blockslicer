@@ -105,3 +105,27 @@ resource "null_resource" "argocd" {
   }
   depends_on = [null_resource.updatekubeconfig]
 }
+
+resource "helm_release" "aws_lbc" {
+  name = "aws-load-balancer-controller"
+
+  repository = "https://aws.github.io/eks-charts"
+  chart      = "aws-load-balancer-controller"
+  namespace  = "kube-system"
+  version    = "1.8.1"
+
+  set {
+    name  = "clusterName"
+    value = aws_eks_cluster.eks.name
+  }
+
+  set {
+    name  = "serviceAccount.name"
+    value = "aws-load-balancer-controller"
+  }
+
+  set {
+    name  = "vpcId"
+    value = aws_vpc.main.id
+  }
+}
