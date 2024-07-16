@@ -96,7 +96,7 @@ resource "null_resource" "updatekubeconfig" {
   provisioner "local-exec" {
     command = "aws eks update-kubeconfig --name ${aws_eks_cluster.eks.name} --region ${local.region}"
   }
-  depends_on = [aws_eks_cluster.eks, aws_eks_pod_identity_association.aws_lbc]
+  depends_on = [aws_eks_cluster.eks, helm_release.aws_lbc]
 }
 
 resource "null_resource" "argocd" {
