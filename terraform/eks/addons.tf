@@ -124,6 +124,11 @@ resource "helm_release" "aws_lbc" {
     value = "aws-load-balancer-controller"
   }
 
+  # set {
+  #   name  = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
+  #   value = aws_iam_role.aws_lbc.arn
+  # }
+
   set {
     name  = "vpcId"
     value = aws_vpc.main.id
