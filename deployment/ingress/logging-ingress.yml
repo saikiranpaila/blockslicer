@@ -12,7 +12,7 @@ spec:
     - http:
         paths:
           - 
-            # host: www.example.com
+            # host: elasticsearch.example.com
             path: /elasticsearch
             pathType: Prefix
             backend:
@@ -20,11 +20,11 @@ spec:
                 name: elasticsearch-master
                 port:
                   number: 9200
-          - # host: www.example.com
-            path: /kibana
+          - # host: kibana.example.com
+            path: /
             pathType: Prefix
             backend:
               service:
-                name: kibana
+                name: kibana-kibana
                 port:
-                  number: 3000
+                  number: 5601

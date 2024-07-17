@@ -1,12 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
-
+/* @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
 body {
 	margin: 0;
 	background-color: #000;
 	background-image: radial-gradient(ellipse at top, #335476 0.0%, #31506e 11.1%, #304b67 22.2%, #2f4760 33.3%, #2d4359 44.4%, #2c3f51 55.6%, #2a3a4a 66.7%, #293643 77.8%, #28323d 88.9%, #262e36 100.0%);
 	height: 100vh;
 	overflow: hidden;
-	font-family: "Nunito Sans", sans-serif;
+	font-family: "Permanent Marker", cursive;
 	font-optical-sizing: auto;
 	font-weight: bold;
 	font-style: normal;
@@ -253,9 +253,9 @@ button {
 	border: none;
 	outline: none;
 	user-select: none;
-	font-family: monospace;
+	font-family: "Permanent Marker", cursive;
 	font-weight: bold;
-	font-size: 1.4rem;
+	font-size: 1.3rem;
 	color: #fff;
 	opacity: 0.75;
 	transition: opacity 0.3s;

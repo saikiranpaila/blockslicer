@@ -78,13 +78,6 @@ resource "aws_iam_role_policy_attachment" "aws_lbc" {
   role       = aws_iam_role.aws_lbc.name
 }
 
-resource "kubernetes_service_account" "service_account_loadbalancer" {
-  metadata {
-    name      = "aws-load-balancer-controller"
-    namespace = "kube-system"
-  }
-}
-
 resource "aws_eks_pod_identity_association" "aws_lbc" {
   cluster_name    = aws_eks_cluster.eks.name
   namespace       = "kube-system"
@@ -96,12 +89,16 @@ resource "null_resource" "updatekubeconfig" {
   provisioner "local-exec" {
     command = "aws eks update-kubeconfig --name ${aws_eks_cluster.eks.name} --region ${local.region}"
   }
-  depends_on = [aws_eks_cluster.eks, helm_release.aws_lbc]
+  depends_on = [aws_eks_cluster.eks, helm_release.aws_lbc, aws_eks_addon.ebs_csi_driver]
 }
 
 resource "null_resource" "argocd" {
   provisioner "local-exec" {
     command = "kubectl create namespace argocd && kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml"
+  }
+  provisioner "local-exec" {
+    when    = destroy
+    command = "kubectl delete namespace argocd"
   }
   depends_on = [null_resource.updatekubeconfig]
 }
