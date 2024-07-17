@@ -12,15 +12,15 @@ spec:
   rules:
     - http:
         paths:
-          - 
-            # host: elasticsearch.example.com
-            path: /elasticsearch
-            pathType: Prefix
-            backend:
-              service:
-                name: elasticsearch-master
-                port:
-                  number: 9200
+          # - 
+          #   # host: elasticsearch.example.com
+          #   path: /elasticsearch
+          #   pathType: Prefix
+          #   backend:
+          #     service:
+          #       name: elasticsearch-master
+          #       port:
+          #         number: 9200
           - # host: kibana.example.com
             path: /
             pathType: Prefix
