@@ -89,7 +89,7 @@ resource "null_resource" "updatekubeconfig" {
   provisioner "local-exec" {
     command = "aws eks update-kubeconfig --name ${aws_eks_cluster.eks.name} --region ${local.region}"
   }
-  depends_on = [aws_eks_cluster.eks, helm_release.aws_lbc, aws_eks_addon.ebs_csi_driver]
+  depends_on = [aws_eks_cluster.eks, aws_eks_addon.ebs_csi_driver]
 }
 
 resource "null_resource" "argocd" {
@@ -130,4 +130,5 @@ resource "helm_release" "aws_lbc" {
     name  = "vpcId"
     value = aws_vpc.main.id
   }
+  depends_on = [ null_resource.updatekubeconfig ]
 }
