@@ -106,7 +106,6 @@ initResources: {}
 networkHost: "0.0.0.0"
 
 volumeClaimTemplate:
-  storageClassName: gp2
   accessModes: ["ReadWriteOnce"]
   resources:
     requests:
@@ -141,7 +140,7 @@ persistence:
   enabled: true
   labels:
     # Add default labels for the volumeClaimTemplate of the StatefulSet
-    enabled: true
+    enabled: false
   annotations: {}
 
 extraVolumes: []
