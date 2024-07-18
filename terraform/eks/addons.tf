@@ -92,16 +92,16 @@ resource "null_resource" "updatekubeconfig" {
   depends_on = [aws_eks_cluster.eks, aws_eks_addon.ebs_csi_driver]
 }
 
-resource "null_resource" "argocd" {
-  provisioner "local-exec" {
-    command = "kubectl create namespace argocd && kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml && kubectl patch svc argocd-server -n argocd -p '{\"spec\": {\"type\": \"LoadBalancer\"}}'"
-  }
-  provisioner "local-exec" {
-    when    = destroy
-    command = "kubectl delete namespace argocd"
-  }
-  depends_on = [null_resource.updatekubeconfig]
-}
+# resource "null_resource" "argocd" {
+#   provisioner "local-exec" {
+#     command = "kubectl create namespace argocd && kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml && kubectl patch svc argocd-server -n argocd -p '{\"spec\": {\"type\": \"LoadBalancer\"}}'"
+#   }
+#   provisioner "local-exec" {
+#     when    = destroy
+#     command = "kubectl delete namespace argocd"
+#   }
+#   depends_on = [null_resource.updatekubeconfig]
+# }
 
 resource "helm_release" "aws_lbc" {
   name = "aws-load-balancer-controller"
