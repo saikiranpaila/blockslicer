@@ -22,7 +22,7 @@ spec:
             - until nslookup replica.default.svc.cluster.local; do echo waiting for postgres-replica; sleep 2; done;
       containers:
         - name: backend-container
-          image: 533267321799.dkr.ecr.us-east-1.amazonaws.com/backend:20
+          image: 533267321799.dkr.ecr.us-east-1.amazonaws.com/backend:4
           ports:
             - containerPort: 8080
           env:
