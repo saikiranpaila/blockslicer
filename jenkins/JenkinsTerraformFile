@@ -1,0 +1,46 @@
+ pipeline {
+    agent any
+    parameters {
+        string(name: 'ACTION', defaultValue: 'apply', description: 'Terraform action: apply or destroy')
+    }
+    stages {
+        stage('Checkout from Git') {
+            steps {
+                git branch: 'main', url: 'https://github.com/saikiranpaila/blockslicer.git'
+            }
+        }
+        stage('Terraform version') {
+            steps {
+                sh 'terraform --version'
+            }
+        }
+        stage('Terraform init') {
+            steps {
+                dir('terraform/eks') {
+                    sh 'terraform init --reconfigure'
+                }
+            }
+        }
+        stage('Terraform validate') {
+            steps {
+                dir('terraform/eks') {
+                    sh 'terraform validate'
+                }
+            }
+        }
+        stage('Terraform plan') {
+            steps {
+                dir('terraform/eks') {
+                    sh 'terraform plan'
+                }
+            }
+        }
+        stage('Terraform apply/destroy') {
+            steps {
+                dir('terraform/eks') {
+                    sh "terraform ${params.ACTION} --auto-approve"
+                }
+            }
+        }
+    }
+}
