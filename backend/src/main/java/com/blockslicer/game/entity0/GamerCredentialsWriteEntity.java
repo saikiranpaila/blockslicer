@@ -6,7 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "gamercreadentials")
+@Table(name = "gamercredentials")
 public class GamerCredentialsWriteEntity {
     @Id
     @Column(columnDefinition = "TEXT")
