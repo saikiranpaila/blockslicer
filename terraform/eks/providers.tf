@@ -6,7 +6,7 @@ terraform {
     }
   }
   backend "s3" {
-    bucket = "eks-bucket-11072024"
+    bucket = "jumphost-bucket"
     key    = "eks/terraform.tfstate"
     region = "us-east-1"
   }
